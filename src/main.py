@@ -166,6 +166,26 @@ def muteOrUnmute() -> None:
 		print('Unmuted')
 
 
+def getTrackDescription() -> None:
+	"""
+	Gets the current track info, including:
+	* Track name;
+	* Artist names; and
+	* Album name.
+
+	Artist names are separated by commas.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	trackName = currentPlayback['item']['name']
+	artistNames = ', '.join(artist['name'] for artist in currentPlayback['item']['artists'])
+	albumName = currentPlayback['item']['album']['name']
+
+	print(f'{trackName} by {artistNames} from {albumName}')
+
+
 def registerKeyboardShortcuts() -> None:
 	"""
 	Registers keyboard shortcuts with the keyboard library.
@@ -183,6 +203,7 @@ def registerKeyboardShortcuts() -> None:
 	keyboard.add_hotkey('ctrl+win+alt+down', decreaseVolume)
 	keyboard.add_hotkey('ctrl+win+alt+up', increaseVolume)
 	keyboard.add_hotkey('ctrl+win+alt+m', muteOrUnmute)
+	keyboard.add_hotkey('ctrl+win+alt+t', getTrackDescription)
 
 
 def main() -> None:
