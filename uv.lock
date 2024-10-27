@@ -2578,6 +2578,7 @@ dependencies = [
     { name = "environs" },
     { name = "keyboard" },
     { name = "spotipy" },
+    { name = "tolk" },
 ]
 
 [package.metadata]
@@ -2585,6 +2586,7 @@ requires-dist = [
     { name = "environs", specifier = ">=11.0.0" },
     { name = "keyboard", specifier = ">=0.13.5" },
     { name = "spotipy", specifier = ">=2.24.0" },
+    { name = "tolk", directory = "vendor/tolk-python" },
 ]
 
 [[package]]
@@ -2600,6 +2602,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/9b/10/145a649207a9d4067
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ea/35/304e456a471128aa4a776243558f43aee3444731ef8fc9bc8c351fddfdd8/spotipy-2.24.0-py3-none-any.whl", hash = "sha256:c5aa7338c624a05a8a80dcf9c6761ded3d6bc2bc5df5f22d9398a895b11bd2ae", size = 30160 },
 ]
+
+[[package]]
+name = "tolk"
+version = "0.1.0"
+source = { directory = "vendor/tolk-python" }
 
 [[package]]
 name = "urllib3"
