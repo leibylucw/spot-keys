@@ -39,42 +39,26 @@ pre-commit install
 ```
 
 ## Development
-### Create a Virtual Environment (virtualenv)
-Using a virtual environment (virtualenv) is necessary when developing against the project. This ensures that `healing-hearts-minds-bot` has its own isolated environment, separate from your global Python and Pip, to manage its dependencies and such. It is assumed in the subsequent system-wide sections that you have created and activated one. To create one:
+### Fill out `.env`
+All secrets and other config are expected to be stored in `.env`. First, copy the `.env-sample` to a `.env`. For any secrets, email me to supply app secrets.
+
+### Install uv
+The project uses [uv](https://github.com/astral-sh/uv). It manages project dependencies and its own virtual environment. To install, use pipx:
 
 ```shell
-python -m venv .venv
+pipx install uv
 ```
 
-### Activate the Virtualenv
-For Command Prompt on Windows:
-
-```cmd
-.\.venv\Scripts\activate.bat
-```
-
-For PowerShell on Windows:
-
-```powershell
-.\.venv\Scripts\activate.ps1
-```
-
-For Linux/MacOS:
-
-```sh
-source .venv/bin/activate
-```
-
-To deactivate the virtualenv on all platforms:
+Then, to install dependencies:
 
 ```shell
-deactivate
+uv venv
+uv sync
 ```
 
-### Install Requirements
-Next, upgrade Pip and install requirements:
+### Run the App
+Finally, to run the main script:
 
 ```shell
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+uv run python src\main.py
 ```
