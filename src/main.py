@@ -44,6 +44,18 @@ def playOrPause() -> None:
 		print('Playing')
 
 
+def previousTrack() -> None:
+	"""Moves to the previous track."""
+	spotify.previous_track()
+	print('Previous track')
+
+
+def nextTrack():
+	"""Moves to the next track."""
+	spotify.next_track()
+	print('Next track')
+
+
 def registerKeyboardShortcuts() -> None:
 	"""
 	Registers keyboard shortcuts with the keyboard library.
@@ -54,6 +66,8 @@ def registerKeyboardShortcuts() -> None:
 	"""
 
 	keyboard.add_hotkey('ctrl+win+alt+p', playOrPause)
+	keyboard.add_hotkey('ctrl+win+alt+left', previousTrack)
+	keyboard.add_hotkey('ctrl+win+alt+right', nextTrack)
 
 
 def main() -> None:
