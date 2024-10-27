@@ -1,0 +1,11 @@
+[project]
+name = "spot-keys"
+version = "0.1.0"
+description = "An applet to define global Spotify keyboard shortcuts for screen reader users"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "environs>=11.0.0",
+    "keyboard>=0.13.5",
+    "spotipy>=2.24.0",
+]
