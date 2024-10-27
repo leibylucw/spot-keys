@@ -22,6 +22,10 @@ spotify = spotipy.Spotify(
 )
 
 
+# Store any app-level state
+playbackState = {}
+
+
 def playOrPause() -> None:
 	"""
 	Plays or pauses the current track dynamically.
@@ -93,6 +97,75 @@ def fastForward(milliseconds=3000):
 	spotify.seek_track(newPosition)
 
 
+def decreaseVolume(percentage=10) -> None:
+	"""
+	Decreases the volume of the current track by the given percentage.
+
+	If the new volume is negative, it sets the volume to 0.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	currentVolume = currentPlayback['device']['volume_percent']
+
+	# Either 0, or the difference between the current volume and the percentage specified
+	newVolume = max(0, currentVolume - percentage)
+
+	# Ensure it's always rounded to the closest percentage
+	newVolume = round(newVolume / percentage) * percentage
+
+	spotify.volume(newVolume)
+	print(f'{newVolume}% volume')
+
+
+def increaseVolume(percentage=10) -> None:
+	"""
+	Increases the volume of the current track by the given percentage.
+
+	If the new volume exceeds 100, it sets the volume to 100.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	currentVolume = currentPlayback['device']['volume_percent']
+
+	# Either 0, or the sum of the current volume and the percentage specified
+	newVolume = min(currentVolume + percentage, 100)
+
+	# Ensure it's always rounded to the closest percentage
+	newVolume = round(newVolume / percentage) * percentage
+
+	spotify.volume(newVolume)
+	print(f'{newVolume}% volume')
+
+
+def muteOrUnmute() -> None:
+	"""
+	Dynamically mutes or unmutes the current track.
+
+	If the current volume is greater than 0,
+	it stores the current volume in the app's state dictionary,
+	'then sets the new volume to 0.
+
+	Otherwise, it sets the new volume to the volume before it was muted.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	currentVolume = currentPlayback['device']['volume_percent']
+
+	if currentVolume > 0:
+		playbackState['preMuteVolume'] = currentVolume
+		spotify.volume(0)
+		print('Muted')
+	else:
+		spotify.volume(playbackState['preMuteVolume'])
+		print('Unmuted')
+
+
 def registerKeyboardShortcuts() -> None:
 	"""
 	Registers keyboard shortcuts with the keyboard library.
@@ -107,6 +180,9 @@ def registerKeyboardShortcuts() -> None:
 	keyboard.add_hotkey('ctrl+win+alt+[', rewind)
 	keyboard.add_hotkey('ctrl+win+alt+]', fastForward)
 	keyboard.add_hotkey('ctrl+win+alt+right', nextTrack)
+	keyboard.add_hotkey('ctrl+win+alt+down', decreaseVolume)
+	keyboard.add_hotkey('ctrl+win+alt+up', increaseVolume)
+	keyboard.add_hotkey('ctrl+win+alt+m', muteOrUnmute)
 
 
 def main() -> None:
