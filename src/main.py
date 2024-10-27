@@ -56,6 +56,43 @@ def nextTrack():
 	print('Next track')
 
 
+def rewind(milliseconds=3000):
+	"""
+	Rewinds the current track by the given interval in milliseconds.
+
+	If the new position is negative, it seeks to the beginning of the track.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	currentProgress = currentPlayback['progress_ms']
+
+	# Either 0 (the beginning of the track), or the difference between the current progress and the interval specified
+	newPosition = max(0, currentProgress - milliseconds)
+
+	spotify.seek_track(newPosition)
+
+
+def fastForward(milliseconds=3000):
+	"""
+	Fast-forwards the current track by the given interval in milliseconds.
+
+	If the new position exceeds the track duration, it seeks to the end of the track.
+	"""
+
+	# Get the current playback context
+	currentPlayback = spotify.current_playback()
+
+	currentTrackProgress = currentPlayback['progress_ms']
+	currentTrackDuration = currentPlayback['item']['duration_ms']
+
+	# Either the track duration (the end of the track), or the sum of the current progress and the interval specified
+	newPosition = min(currentTrackDuration, currentTrackProgress + milliseconds)
+
+	spotify.seek_track(newPosition)
+
+
 def registerKeyboardShortcuts() -> None:
 	"""
 	Registers keyboard shortcuts with the keyboard library.
@@ -67,6 +104,8 @@ def registerKeyboardShortcuts() -> None:
 
 	keyboard.add_hotkey('ctrl+win+alt+p', playOrPause)
 	keyboard.add_hotkey('ctrl+win+alt+left', previousTrack)
+	keyboard.add_hotkey('ctrl+win+alt+[', rewind)
+	keyboard.add_hotkey('ctrl+win+alt+]', fastForward)
 	keyboard.add_hotkey('ctrl+win+alt+right', nextTrack)
 
 
