@@ -8,4 +8,8 @@ dependencies = [
     "environs>=11.0.0",
     "keyboard>=0.13.5",
     "spotipy>=2.24.0",
+    "tolk",
 ]
+
+[tool.uv.sources]
+tolk = { path = "vendor/tolk-python" }

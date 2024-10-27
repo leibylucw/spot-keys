@@ -5,6 +5,7 @@ import os
 import environs
 import keyboard
 import spotipy
+import tolk
 from spotipy.oauth2 import SpotifyOAuth
 
 # Read environment variables from `.env`
@@ -42,22 +43,22 @@ def playOrPause() -> None:
 
 	if isPlaying:
 		spotify.pause_playback()
-		print('Paused')
+		tolk.speak('Paused')
 	else:
 		spotify.start_playback()
-		print('Playing')
+		tolk.speak('Playing')
 
 
 def previousTrack() -> None:
 	"""Moves to the previous track."""
 	spotify.previous_track()
-	print('Previous track')
+	tolk.speak('Previous track')
 
 
 def nextTrack():
 	"""Moves to the next track."""
 	spotify.next_track()
-	print('Next track')
+	tolk.speak('Next track')
 
 
 def rewind(milliseconds=3000):
@@ -116,7 +117,7 @@ def decreaseVolume(percentage=10) -> None:
 	newVolume = round(newVolume / percentage) * percentage
 
 	spotify.volume(newVolume)
-	print(f'{newVolume}% volume')
+	tolk.speak(f'{newVolume}% volume')
 
 
 def increaseVolume(percentage=10) -> None:
@@ -138,7 +139,7 @@ def increaseVolume(percentage=10) -> None:
 	newVolume = round(newVolume / percentage) * percentage
 
 	spotify.volume(newVolume)
-	print(f'{newVolume}% volume')
+	tolk.speak(f'{newVolume}% volume')
 
 
 def muteOrUnmute() -> None:
@@ -160,10 +161,10 @@ def muteOrUnmute() -> None:
 	if currentVolume > 0:
 		playbackState['preMuteVolume'] = currentVolume
 		spotify.volume(0)
-		print('Muted')
+		tolk.speak('Muted')
 	else:
 		spotify.volume(playbackState['preMuteVolume'])
-		print('Unmuted')
+		tolk.speak('Unmuted')
 
 
 def getTrackDescription() -> None:
@@ -183,7 +184,7 @@ def getTrackDescription() -> None:
 	artistNames = ', '.join(artist['name'] for artist in currentPlayback['item']['artists'])
 	albumName = currentPlayback['item']['album']['name']
 
-	print(f'{trackName} by {artistNames} from {albumName}')
+	tolk.speak(f'{trackName} by {artistNames} from {albumName}')
 
 
 def registerKeyboardShortcuts() -> None:
@@ -207,6 +208,8 @@ def registerKeyboardShortcuts() -> None:
 
 
 def main() -> None:
+	tolk.load()
+	tolk.speak('Spot Keys is ready')
 	registerKeyboardShortcuts()
 	keyboard.wait()
 
