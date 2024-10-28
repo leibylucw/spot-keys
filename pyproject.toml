@@ -11,6 +11,13 @@ dependencies = [
     "tolk",
 ]
 
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["spotKeys"]
+
 [tool.uv.sources]
 tolk = { path = "vendor/tolk-python" }
 
