@@ -120,7 +120,7 @@ def increaseVolume(spotifyHandler, percentage=10) -> None:
 
 def muteOrUnmute(spotifyHandler, playbackState) -> None:
 	"""
-	Dynamically mutes or unmutes the current track.
+	Mutes or unmutes the current track dynamically.
 
 	If the current volume is greater than 0,
 	it stores the current volume in the app's state dictionary,
@@ -145,7 +145,7 @@ def muteOrUnmute(spotifyHandler, playbackState) -> None:
 
 def getTrackDescription(spotifyHandler) -> None:
 	"""
-	Gets the current track info, including:
+	Gets the current track info as a single string, including:
 	* Track name;
 	* Artist names; and
 	* Album name.

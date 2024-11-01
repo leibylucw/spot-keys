@@ -9,5 +9,5 @@ def initialize() -> None:
 
 
 def say(text: str) -> None:
-	"""Speaks the given text."""
+	"""Speaks the given text with Tolk."""
 	tolk.speak(text)
