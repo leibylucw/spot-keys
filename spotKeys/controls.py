@@ -1,9 +1,13 @@
 """Defines user-facing controls to use spotifyHandler."""
 
 from spotKeys import speech
+from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
+
+# Store any app-level state
+APP_STATE = {}
 
 
-def playOrPause(spotifyHandler) -> None:
+def playOrPause() -> None:
 	"""
 	Plays or pauses the current track dynamically.
 
@@ -25,19 +29,19 @@ def playOrPause(spotifyHandler) -> None:
 		speech.say('Playing')
 
 
-def previousTrack(spotifyHandler) -> None:
+def previousTrack() -> None:
 	"""Moves to the previous track."""
 	spotifyHandler.previous_track()
 	speech.say('Previous track')
 
 
-def nextTrack(spotifyHandler):
+def nextTrack() -> None:
 	"""Moves to the next track."""
 	spotifyHandler.next_track()
 	speech.say('Next track')
 
 
-def rewind(spotifyHandler, milliseconds=3000):
+def rewind(milliseconds=3000) -> None:
 	"""
 	Rewinds the current track by the given interval in milliseconds.
 
@@ -55,7 +59,7 @@ def rewind(spotifyHandler, milliseconds=3000):
 	spotifyHandler.seek_track(newPosition)
 
 
-def fastForward(spotifyHandler, milliseconds=3000):
+def fastForward(milliseconds=3000) -> None:
 	"""
 	Fast-forwards the current track by the given interval in milliseconds.
 
@@ -74,7 +78,7 @@ def fastForward(spotifyHandler, milliseconds=3000):
 	spotifyHandler.seek_track(newPosition)
 
 
-def decreaseVolume(spotifyHandler, percentage=10) -> None:
+def decreaseVolume(percentage=10) -> None:
 	"""
 	Decreases the volume of the current track by the given percentage.
 
@@ -96,7 +100,7 @@ def decreaseVolume(spotifyHandler, percentage=10) -> None:
 	speech.say(f'{newVolume}% volume')
 
 
-def increaseVolume(spotifyHandler, percentage=10) -> None:
+def increaseVolume(percentage=10) -> None:
 	"""
 	Increases the volume of the current track by the given percentage.
 
@@ -118,7 +122,7 @@ def increaseVolume(spotifyHandler, percentage=10) -> None:
 	speech.say(f'{newVolume}% volume')
 
 
-def muteOrUnmute(spotifyHandler, playbackState) -> None:
+def muteOrUnmute() -> None:
 	"""
 	Mutes or unmutes the current track dynamically.
 
@@ -135,15 +139,15 @@ def muteOrUnmute(spotifyHandler, playbackState) -> None:
 	currentVolume = currentPlayback['device']['volume_percent']
 
 	if currentVolume > 0:
-		playbackState['preMuteVolume'] = currentVolume
+		APP_STATE['preMuteVolume'] = currentVolume
 		spotifyHandler.volume(0)
 		speech.say('Muted')
 	else:
-		spotifyHandler.volume(playbackState['preMuteVolume'])
+		spotifyHandler.volume(APP_STATE['preMuteVolume'])
 		speech.say('Unmuted')
 
 
-def getTrackDescription(spotifyHandler) -> None:
+def getTrackDescription() -> None:
 	"""
 	Gets the current track info as a single string, including:
 	* Track name;
