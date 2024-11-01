@@ -7,6 +7,12 @@ from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 APP_STATE = {}
 
 
+def getCurrentPlaybackContext() -> dict:
+	if currentPlaybackContext := spotifyHandler.current_playback():
+		return currentPlaybackContext
+	return None
+
+
 def playOrPause() -> None:
 	"""
 	Plays or pauses the current track dynamically.
@@ -16,10 +22,10 @@ def playOrPause() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
 	# Determine if media is currently playing
-	isPlaying = currentPlayback['is_playing']
+	isPlaying = currentPlaybackContext['is_playing']
 
 	if isPlaying:
 		spotifyHandler.pause_playback()
@@ -49,9 +55,9 @@ def rewind(milliseconds=3000) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	currentProgress = currentPlayback['progress_ms']
+	currentProgress = currentPlaybackContext['progress_ms']
 
 	# Either 0 (the beginning of the track), or the difference between the current progress and the interval specified
 	newPosition = max(0, currentProgress - milliseconds)
@@ -67,10 +73,10 @@ def fastForward(milliseconds=3000) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	currentTrackProgress = currentPlayback['progress_ms']
-	currentTrackDuration = currentPlayback['item']['duration_ms']
+	currentTrackProgress = currentPlaybackContext['progress_ms']
+	currentTrackDuration = currentPlaybackContext['item']['duration_ms']
 
 	# Either the track duration (the end of the track), or the sum of the current progress and the interval specified
 	newPosition = min(currentTrackDuration, currentTrackProgress + milliseconds)
@@ -86,9 +92,9 @@ def decreaseVolume(percentage=10) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	currentVolume = currentPlayback['device']['volume_percent']
+	currentVolume = currentPlaybackContext['device']['volume_percent']
 
 	# Either 0, or the difference between the current volume and the percentage specified
 	newVolume = max(0, currentVolume - percentage)
@@ -108,9 +114,9 @@ def increaseVolume(percentage=10) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	currentVolume = currentPlayback['device']['volume_percent']
+	currentVolume = currentPlaybackContext['device']['volume_percent']
 
 	# Either 0, or the sum of the current volume and the percentage specified
 	newVolume = min(currentVolume + percentage, 100)
@@ -134,9 +140,9 @@ def muteOrUnmute() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	currentVolume = currentPlayback['device']['volume_percent']
+	currentVolume = currentPlaybackContext['device']['volume_percent']
 
 	if currentVolume > 0:
 		APP_STATE['preMuteVolume'] = currentVolume
@@ -158,10 +164,10 @@ def getTrackDescription() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlayback = spotifyHandler.current_playback()
+	currentPlaybackContext = getCurrentPlaybackContext()
 
-	trackName = currentPlayback['item']['name']
-	artistNames = ', '.join(artist['name'] for artist in currentPlayback['item']['artists'])
-	albumName = currentPlayback['item']['album']['name']
+	trackName = currentPlaybackContext['item']['name']
+	artistNames = ', '.join(artist['name'] for artist in currentPlaybackContext['item']['artists'])
+	albumName = currentPlaybackContext['item']['album']['name']
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')
