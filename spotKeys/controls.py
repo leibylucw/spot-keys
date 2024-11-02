@@ -17,6 +17,13 @@ class NoMediaPlayingError(Exception):
 
 
 def getCurrentPlaybackContext() -> dict:
+	"""
+	Gets the context payload for the currently-playing media.
+
+	If media is playing, the payload is returned.
+	Otherwise, a NoMediaPlaying error is raised.
+	"""
+
 	if not (currentPlaybackContext := spotifyHandler.current_playback()):
 		raise NoMediaPlayingError()
 	return currentPlaybackContext
