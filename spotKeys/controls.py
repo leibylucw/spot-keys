@@ -31,6 +31,7 @@ def checkForPlayingMedia(function):
 			currentPlaybackContext = getCurrentPlaybackContext()
 			return function(currentPlaybackContext, *args, **kwargs)
 		except NoMediaPlayingError:
+			speech.say('No media playing')
 			return
 
 	return wrapper
