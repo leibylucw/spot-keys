@@ -8,6 +8,7 @@ def main() -> None:
 	core.initialize()
 	speech.say('Spot Keys is ready')
 	core.run()
+	speech.say('Exiting Spot Keys')
 
 
 if __name__ == '__main__':

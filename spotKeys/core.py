@@ -33,4 +33,4 @@ def initialize() -> None:
 
 def run() -> None:
 	"""Awaits user input."""
-	keyboard.wait()
+	keyboard.wait('ctrl+win+alt+q')
