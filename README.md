@@ -60,5 +60,5 @@ uv sync
 Finally, to run the main script:
 
 ```shell
-uv run python src\main.py
+uv run main
 ```
