@@ -21,6 +21,9 @@ packages = ["spotKeys"]
 [tool.uv.sources]
 tolk = { path = "vendor/tolk-python" }
 
+[project.scripts]
+main = "spotKeys.main:main"
+
 [tool.ruff]
 line-length = 120
 output-format = "grouped"
