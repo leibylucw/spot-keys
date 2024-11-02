@@ -1,5 +1,5 @@
 # spot-keys
-An applet to define global Spotify keyboard shortcuts for screen reader users
+An app to define global Spotify keyboard shortcuts for screen reader users
 
 ## Setup and Quickstart
 ### Install System Dependencies
@@ -60,5 +60,5 @@ uv sync
 Finally, to run the main script:
 
 ```shell
-uv run python src\main.py
+uv run main
 ```
