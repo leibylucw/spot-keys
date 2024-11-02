@@ -1,0 +1,14 @@
+{
+		"keyboardModifiers": "alt+shift",
+		"keyboardShortcuts": {
+			"p": "playOrPause",
+			"left": "previousTrack",
+			"right": "nextTrack",
+			"down": "decreaseVolume",
+			"up": "increaseVolume",
+			"[": "rewind",
+			"]": "fastForward",
+			"m": "muteOrUnmute",
+			"t": "getTrackDescription"
+		}
+	}
