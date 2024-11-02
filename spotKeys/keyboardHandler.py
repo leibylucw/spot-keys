@@ -6,7 +6,7 @@ import keyboard
 
 from spotKeys import controls
 
-DEFAULT_KEYBOARD_PREFIX = 'ctrl+alt+shift'
+DEFAULT_KEYBOARD_MODIFIERS = 'alt+shift'
 DEFAULT_KEYBOARD_SHORTCUTS = {
 	'p': controls.playOrPause,
 	'left': controls.previousTrack,
@@ -30,10 +30,10 @@ def registerKeyboardShortcuts() -> None:
 	"""
 
 	for shortcut, control in DEFAULT_KEYBOARD_SHORTCUTS.items():
-		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_PREFIX}+{shortcut}', control)
+		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_MODIFIERS}+{shortcut}', control)
 
 
 def waitForInput() -> None:
 	"""Blocks using the keyboard library's `wait` loop."""
 
-	keyboard.wait(f'{DEFAULT_KEYBOARD_PREFIX}+q')
+	keyboard.wait(f'{DEFAULT_KEYBOARD_MODIFIERS}+q')
