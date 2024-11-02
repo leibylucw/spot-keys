@@ -27,10 +27,12 @@ def registerKeyboardShortcuts() -> None:
 
 def initialize() -> None:
 	"""Initializes the core logic by initializing speech and registering keyboard shortcuts."""
+
 	speech.initialize()
 	registerKeyboardShortcuts()
 
 
 def run() -> None:
 	"""Awaits user input."""
+
 	keyboard.wait('ctrl+win+alt+q')
