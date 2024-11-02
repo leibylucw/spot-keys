@@ -9,6 +9,6 @@
 			"[": "rewind",
 			"]": "fastForward",
 			"m": "muteOrUnmute",
-			"t": "getTrackDescription"
+			"i": "getLongTrackDescription"
 		}
 	}

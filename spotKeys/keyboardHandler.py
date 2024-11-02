@@ -19,7 +19,7 @@ DEFAULT_KEYBOARD_SHORTCUTS = {
 	'[': 'rewind',
 	']': 'fastForward',
 	'm': 'muteOrUnmute',
-	't': 'getTrackDescription',
+	'i': 'getLongTrackDescription',
 }
 
 DEFAULT_QUIT_KEYBOARD_SHORTCUT = f'{DEFAULT_KEYBOARD_MODIFIERS}+q'
@@ -34,7 +34,7 @@ functionsToControls = {
 	'rewind': controls.rewind,
 	'fastForward': controls.fastForward,
 	'muteOrUnmute': controls.muteOrUnmute,
-	'getTrackDescription': controls.getTrackDescription,
+	'getLongTrackDescription': controls.getLongTrackDescription,
 }
 
 DEFAULT_JSON_CONFIG_PATH = 'data/config.json'

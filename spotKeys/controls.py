@@ -177,7 +177,7 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 
 
 @checkForPlayingMedia
-def getTrackDescription(currentPlaybackContext) -> None:
+def getLongTrackDescription(currentPlaybackContext) -> None:
 	"""
 	Gets the current track info as a single string, including:
 	* Track name;
