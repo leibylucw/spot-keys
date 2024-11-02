@@ -7,10 +7,17 @@ from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 APP_STATE = {}
 
 
+class NoMediaPlayingError(Exception):
+	"""Exception raised when there is no media currently playing."""
+
+	def __init__(self, message='No media is currently playing'):
+		super().__init__(message)
+
+
 def getCurrentPlaybackContext() -> dict:
-	if currentPlaybackContext := spotifyHandler.current_playback():
-		return currentPlaybackContext
-	return None
+	if not (currentPlaybackContext := spotifyHandler.current_playback()):
+		raise NoMediaPlayingError()
+	return currentPlaybackContext
 
 
 def playOrPause() -> None:
@@ -22,7 +29,10 @@ def playOrPause() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	# Determine if media is currently playing
 	isPlaying = currentPlaybackContext['is_playing']
@@ -37,12 +47,26 @@ def playOrPause() -> None:
 
 def previousTrack() -> None:
 	"""Moves to the previous track."""
+
+	# Get the current playback context
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
+
 	spotifyHandler.previous_track()
 	speech.say('Previous track')
 
 
 def nextTrack() -> None:
 	"""Moves to the next track."""
+
+	# Get the current playback context
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
+
 	spotifyHandler.next_track()
 	speech.say('Next track')
 
@@ -55,7 +79,10 @@ def rewind(milliseconds=3000) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	currentProgress = currentPlaybackContext['progress_ms']
 
@@ -73,7 +100,10 @@ def fastForward(milliseconds=3000) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	currentTrackProgress = currentPlaybackContext['progress_ms']
 	currentTrackDuration = currentPlaybackContext['item']['duration_ms']
@@ -92,7 +122,10 @@ def decreaseVolume(percentage=10) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
@@ -114,7 +147,10 @@ def increaseVolume(percentage=10) -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
@@ -140,7 +176,10 @@ def muteOrUnmute() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
@@ -164,7 +203,10 @@ def getTrackDescription() -> None:
 	"""
 
 	# Get the current playback context
-	currentPlaybackContext = getCurrentPlaybackContext()
+	try:
+		currentPlaybackContext = getCurrentPlaybackContext()
+	except NoMediaPlayingError:
+		return
 
 	trackName = currentPlaybackContext['item']['name']
 	artistNames = ', '.join(artist['name'] for artist in currentPlaybackContext['item']['artists'])
