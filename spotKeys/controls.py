@@ -44,6 +44,29 @@ def checkForPlayingMedia(function):
 	return wrapper
 
 
+# The following functions do not check if media is playing
+# They simply return data from a given playback context payload
+# They also can be used to compose larger forms of text like long trac descriptions
+
+
+def getTrackName(currentPlaybackContext) -> None:
+	"""Gets the name of the currently-playing track."""
+
+	return currentPlaybackContext['item']['name']
+
+
+def getTrackArtistNames(currentPlaybackContext) -> None:
+	"""Gets a list of the artist name(s) of the currently-playing track."""
+
+	return [artist['name'] for artist in currentPlaybackContext['item']['artists']]
+
+
+def getTrackAlbumName(currentPlaybackContext) -> None:
+	"""Gets the album name of the currently-playing track."""
+
+	return currentPlaybackContext['item']['album']['name']
+
+
 @checkForPlayingMedia
 def playOrPause(currentPlaybackContext) -> None:
 	"""
@@ -183,12 +206,10 @@ def getLongTrackDescription(currentPlaybackContext) -> None:
 	* Track name;
 	* Artist names; and
 	* Album name.
-
-	Artist names are separated by commas.
 	"""
 
-	trackName = currentPlaybackContext['item']['name']
-	artistNames = ', '.join(artist['name'] for artist in currentPlaybackContext['item']['artists'])
-	albumName = currentPlaybackContext['item']['album']['name']
+	trackName = getTrackName(currentPlaybackContext)
+	artistNames = getTrackArtistNames(currentPlaybackContext)
+	albumName = getTrackAlbumName(currentPlaybackContext)
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')
