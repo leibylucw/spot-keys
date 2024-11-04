@@ -50,19 +50,19 @@ def checkForPlayingMedia(function):
 
 
 def getTrackName(currentPlaybackContext) -> None:
-	"""Gets the name of the currently-playing track."""
+	"""Gets the name of the track from the given playback context."""
 
 	return currentPlaybackContext['item']['name']
 
 
 def getTrackArtistNames(currentPlaybackContext) -> None:
-	"""Gets a list of the artist name(s) of the currently-playing track."""
+	"""Gets a list of the artist name(s) of the track from the given playback context."""
 
 	return [artist['name'] for artist in currentPlaybackContext['item']['artists']]
 
 
 def getTrackAlbumName(currentPlaybackContext) -> None:
-	"""Gets the album name of the currently-playing track."""
+	"""Gets the album name of the track from the given playback context."""
 
 	return currentPlaybackContext['item']['album']['name']
 
