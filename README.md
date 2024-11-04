@@ -70,4 +70,4 @@ You may compile a binary of the app using [pyinstaller](https://www.pyinstaller.
 uv run pyinstaller build.spec
 ```
 
-You should see a resulting executable in `dist/Spot Keys.exe`.
+You should see a resulting executable at `dist/Spot Keys.exe`.
