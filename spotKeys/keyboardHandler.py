@@ -19,6 +19,9 @@ DEFAULT_KEYBOARD_SHORTCUTS = {
 	'[': 'rewind',
 	']': 'fastForward',
 	'm': 'muteOrUnmute',
+	'n': 'getCurrentTrackName',
+	'r': 'getCurrentTrackArtistNames',
+	'a': 'getCurrentTrackAlbumName',
 	'i': 'getLongTrackDescription',
 }
 
@@ -34,6 +37,9 @@ functionsToControls = {
 	'rewind': controls.rewind,
 	'fastForward': controls.fastForward,
 	'muteOrUnmute': controls.muteOrUnmute,
+	'getCurrentTrackName': controls.getCurrentTrackName,
+	'getCurrentTrackArtistNames': controls.getCurrentTrackArtistNames,
+	'getCurrentTrackAlbumName': controls.getCurrentTrackAlbumName,
 	'getLongTrackDescription': controls.getLongTrackDescription,
 }
 

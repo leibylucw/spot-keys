@@ -9,6 +9,9 @@
 			"[": "rewind",
 			"]": "fastForward",
 			"m": "muteOrUnmute",
+			"n": "getCurrentTrackName",
+			"r": "getCurrentTrackArtistNames",
+			"a": "getCurrentTrackAlbumName",
 			"i": "getLongTrackDescription"
 		}
 	}

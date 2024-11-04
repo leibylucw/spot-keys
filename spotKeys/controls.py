@@ -200,6 +200,27 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 
 
 @checkForPlayingMedia
+def getCurrentTrackName(currentPlaybackContext) -> None:
+	"""Gets the name of the currently-playing track."""
+
+	speech.say(getTrackName(currentPlaybackContext))
+
+
+@checkForPlayingMedia
+def getCurrentTrackArtistNames(currentPlaybackContext) -> None:
+	"""Get the list of artist name(s) of the currently-playing track."""
+
+	speech.say(','.join(getTrackArtistNames(currentPlaybackContext)))
+
+
+@checkForPlayingMedia
+def getCurrentTrackAlbumName(currentPlaybackContext) -> None:
+	"""Gets the album name of the currently-playing track."""
+
+	speech.say(getTrackAlbumName(currentPlaybackContext))
+
+
+@checkForPlayingMedia
 def getLongTrackDescription(currentPlaybackContext) -> None:
 	"""
 	Gets the current track info as a single string, including:
