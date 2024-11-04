@@ -1,4 +1,4 @@
-"""Defines user-facing controls to use spotifyHandler."""
+"""Defines user-facing controls to use Spotify."""
 
 from functools import wraps
 
