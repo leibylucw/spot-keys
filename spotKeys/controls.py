@@ -210,7 +210,7 @@ def getCurrentTrackName(currentPlaybackContext) -> None:
 def getCurrentTrackArtistNames(currentPlaybackContext) -> None:
 	"""Get the list of artist name(s) of the currently-playing track."""
 
-	speech.say(','.join(getTrackArtistNames(currentPlaybackContext)))
+	speech.say(', '.join(getTrackArtistNames(currentPlaybackContext)))
 
 
 @checkForPlayingMedia
@@ -230,7 +230,7 @@ def getCurrentTrackDetails(currentPlaybackContext) -> None:
 	"""
 
 	trackName = getTrackName(currentPlaybackContext)
-	artistNames = ','.join(getTrackArtistNames(currentPlaybackContext))
+	artistNames = ', '.join(getTrackArtistNames(currentPlaybackContext))
 	albumName = getTrackAlbumName(currentPlaybackContext)
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')
