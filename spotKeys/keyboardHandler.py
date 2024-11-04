@@ -22,7 +22,7 @@ DEFAULT_KEYBOARD_SHORTCUTS = {
 	'n': 'getCurrentTrackName',
 	'r': 'getCurrentTrackArtistNames',
 	'a': 'getCurrentTrackAlbumName',
-	'i': 'getLongTrackDescription',
+	'i': 'getCurrentTrackDetails',
 }
 
 DEFAULT_QUIT_KEYBOARD_SHORTCUT = f'{DEFAULT_KEYBOARD_MODIFIERS}+q'
@@ -40,7 +40,7 @@ functionsToControls = {
 	'getCurrentTrackName': controls.getCurrentTrackName,
 	'getCurrentTrackArtistNames': controls.getCurrentTrackArtistNames,
 	'getCurrentTrackAlbumName': controls.getCurrentTrackAlbumName,
-	'getLongTrackDescription': controls.getLongTrackDescription,
+	'getCurrentTrackDetails': controls.getCurrentTrackDetails,
 }
 
 DEFAULT_JSON_CONFIG_PATH = 'data/config.json'

@@ -221,16 +221,16 @@ def getCurrentTrackAlbumName(currentPlaybackContext) -> None:
 
 
 @checkForPlayingMedia
-def getLongTrackDescription(currentPlaybackContext) -> None:
+def getCurrentTrackDetails(currentPlaybackContext) -> None:
 	"""
-	Gets the current track info as a single string, including:
+	Gets the current track details as a single announcement, including:
 	* Track name;
 	* Artist names; and
 	* Album name.
 	"""
 
 	trackName = getTrackName(currentPlaybackContext)
-	artistNames = getTrackArtistNames(currentPlaybackContext)
+	artistNames = ','.join(getTrackArtistNames(currentPlaybackContext))
 	albumName = getTrackAlbumName(currentPlaybackContext)
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')

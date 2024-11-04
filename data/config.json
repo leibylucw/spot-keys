@@ -12,6 +12,6 @@
 			"n": "getCurrentTrackName",
 			"r": "getCurrentTrackArtistNames",
 			"a": "getCurrentTrackAlbumName",
-			"i": "getLongTrackDescription"
+			"i": "getCurrentTrackDetails"
 		}
 	}
