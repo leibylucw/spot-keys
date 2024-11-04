@@ -19,7 +19,10 @@ DEFAULT_KEYBOARD_SHORTCUTS = {
 	'[': 'rewind',
 	']': 'fastForward',
 	'm': 'muteOrUnmute',
-	't': 'getTrackDescription',
+	'n': 'getCurrentTrackName',
+	'r': 'getCurrentTrackArtistNames',
+	'a': 'getCurrentTrackAlbumName',
+	'i': 'getCurrentTrackDetails',
 }
 
 DEFAULT_QUIT_KEYBOARD_SHORTCUT = f'{DEFAULT_KEYBOARD_MODIFIERS}+q'
@@ -34,7 +37,10 @@ functionsToControls = {
 	'rewind': controls.rewind,
 	'fastForward': controls.fastForward,
 	'muteOrUnmute': controls.muteOrUnmute,
-	'getTrackDescription': controls.getTrackDescription,
+	'getCurrentTrackName': controls.getCurrentTrackName,
+	'getCurrentTrackArtistNames': controls.getCurrentTrackArtistNames,
+	'getCurrentTrackAlbumName': controls.getCurrentTrackAlbumName,
+	'getCurrentTrackDetails': controls.getCurrentTrackDetails,
 }
 
 DEFAULT_JSON_CONFIG_PATH = 'data/config.json'

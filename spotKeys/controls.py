@@ -1,4 +1,4 @@
-"""Defines user-facing controls to use spotifyHandler."""
+"""Defines user-facing controls to use Spotify."""
 
 from functools import wraps
 
@@ -42,6 +42,29 @@ def checkForPlayingMedia(function):
 			return
 
 	return wrapper
+
+
+# The following functions do not check if media is playing
+# They simply return data from a given playback context payload
+# They also can be used to compose larger forms of text like long trac descriptions
+
+
+def getTrackName(currentPlaybackContext) -> str:
+	"""Gets the name of the track from the given playback context."""
+
+	return currentPlaybackContext['item']['name']
+
+
+def getTrackArtistNames(currentPlaybackContext) -> list:
+	"""Gets a list of the artist name(s) of the track from the given playback context."""
+
+	return [artist['name'] for artist in currentPlaybackContext['item']['artists']]
+
+
+def getTrackAlbumName(currentPlaybackContext) -> str:
+	"""Gets the album name of the track from the given playback context."""
+
+	return currentPlaybackContext['item']['album']['name']
 
 
 @checkForPlayingMedia
@@ -177,18 +200,37 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 
 
 @checkForPlayingMedia
-def getTrackDescription(currentPlaybackContext) -> None:
+def getCurrentTrackName(currentPlaybackContext) -> None:
+	"""Gets the name of the currently-playing track."""
+
+	speech.say(getTrackName(currentPlaybackContext))
+
+
+@checkForPlayingMedia
+def getCurrentTrackArtistNames(currentPlaybackContext) -> None:
+	"""Get the list of artist name(s) of the currently-playing track."""
+
+	speech.say(','.join(getTrackArtistNames(currentPlaybackContext)))
+
+
+@checkForPlayingMedia
+def getCurrentTrackAlbumName(currentPlaybackContext) -> None:
+	"""Gets the album name of the currently-playing track."""
+
+	speech.say(getTrackAlbumName(currentPlaybackContext))
+
+
+@checkForPlayingMedia
+def getCurrentTrackDetails(currentPlaybackContext) -> None:
 	"""
-	Gets the current track info as a single string, including:
+	Gets the current track details as a single announcement, including:
 	* Track name;
 	* Artist names; and
 	* Album name.
-
-	Artist names are separated by commas.
 	"""
 
-	trackName = currentPlaybackContext['item']['name']
-	artistNames = ', '.join(artist['name'] for artist in currentPlaybackContext['item']['artists'])
-	albumName = currentPlaybackContext['item']['album']['name']
+	trackName = getTrackName(currentPlaybackContext)
+	artistNames = ','.join(getTrackArtistNames(currentPlaybackContext))
+	albumName = getTrackAlbumName(currentPlaybackContext)
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')
