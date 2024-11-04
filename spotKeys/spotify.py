@@ -14,7 +14,7 @@ env = Env()
 env.read_env(path=appPath / '.env')
 
 homeDirectory = Path.home()
-spotifyCachePath = homeDirectory / '.spotify_cache'
+spotifyCachePath = homeDirectory / '.spot_keys_cache'
 
 # Initialize spotipy with environment variables
 SPOTIFY_HANDLER = spotipy.Spotify(
