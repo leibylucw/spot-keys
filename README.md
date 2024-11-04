@@ -62,3 +62,12 @@ Finally, to run the main script:
 ```shell
 uv run main
 ```
+
+## Building
+You may compile a binary of the app using [pyinstaller](https://www.pyinstaller.org). It was installed using uv to initialize the project. The project contains a `build.spec` file which defines the build process, so you should only need to run the following command:
+
+```shell
+uv run pyinstaller build.spec
+```
+
+You should see a resulting executable in `dist/Spot Keys.exe`.
