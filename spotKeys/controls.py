@@ -49,19 +49,19 @@ def checkForPlayingMedia(function):
 # They also can be used to compose larger forms of text like long trac descriptions
 
 
-def getTrackName(currentPlaybackContext) -> None:
+def getTrackName(currentPlaybackContext) -> str:
 	"""Gets the name of the track from the given playback context."""
 
 	return currentPlaybackContext['item']['name']
 
 
-def getTrackArtistNames(currentPlaybackContext) -> None:
+def getTrackArtistNames(currentPlaybackContext) -> list:
 	"""Gets a list of the artist name(s) of the track from the given playback context."""
 
 	return [artist['name'] for artist in currentPlaybackContext['item']['artists']]
 
 
-def getTrackAlbumName(currentPlaybackContext) -> None:
+def getTrackAlbumName(currentPlaybackContext) -> str:
 	"""Gets the album name of the track from the given playback context."""
 
 	return currentPlaybackContext['item']['album']['name']
