@@ -7,11 +7,11 @@ import spotipy
 from environs import Env
 from spotipy.oauth2 import SpotifyOAuth
 
-env = Env()
-env.read_env(path=Path(__file__).resolve().parent / '.env')
-
 # Check if the application is frozen
 appPath = Path(sys._MEIPASS) if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent
+
+env = Env()
+env.read_env(path=appPath / '.env')
 
 homeDirectory = Path.home()
 spotifyCachePath = homeDirectory / '.spotify_cache'
