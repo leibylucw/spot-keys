@@ -5,6 +5,9 @@ from functools import wraps
 from spotKeys import speech
 from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 
+# Store default values
+VOLUME_PERCENTAGE_INTERVAL = 10
+
 # Store any app-level state
 APP_STATE = {}
 
@@ -137,7 +140,7 @@ def fastForward(currentPlaybackContext, milliseconds=3000) -> None:
 
 
 @checkForPlayingMedia
-def decreaseVolume(currentPlaybackContext, percentage=10) -> None:
+def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Decreases the volume of the current track by the given percentage.
 
@@ -146,10 +149,10 @@ def decreaseVolume(currentPlaybackContext, percentage=10) -> None:
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the difference between the current volume and the percentage specified
+	# Either 0, or the difference between the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
 	newVolume = max(0, currentVolume - percentage)
 
-	# Ensure it's always rounded to the closest percentage
+	# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
 	newVolume = round(newVolume / percentage) * percentage
 
 	spotifyHandler.volume(newVolume)
@@ -157,7 +160,7 @@ def decreaseVolume(currentPlaybackContext, percentage=10) -> None:
 
 
 @checkForPlayingMedia
-def increaseVolume(currentPlaybackContext, percentage=10) -> None:
+def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Increases the volume of the current track by the given percentage.
 
@@ -166,10 +169,10 @@ def increaseVolume(currentPlaybackContext, percentage=10) -> None:
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the sum of the current volume and the percentage specified
+	# Either 0, or the sum of the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
 	newVolume = min(currentVolume + percentage, 100)
 
-	# Ensure it's always rounded to the closest percentage
+	# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
 	newVolume = round(newVolume / percentage) * percentage
 
 	spotifyHandler.volume(newVolume)
