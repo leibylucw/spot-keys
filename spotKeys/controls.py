@@ -175,14 +175,18 @@ def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the difference between the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
-	newVolume = max(0, currentVolume - percentage)
+	if APP_STATE.get('preMuteVolume'):
+		muteOrUnmute()
 
-	# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
-	newVolume = round(newVolume / percentage) * percentage
+	else:
+		# Either 0, or the difference between the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
+		newVolume = max(0, currentVolume - percentage)
 
-	spotifyHandler.volume(newVolume)
-	speech.say(f'{newVolume}% volume')
+		# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
+		newVolume = round(newVolume / percentage) * percentage
+
+		spotifyHandler.volume(newVolume)
+		speech.say(f'{newVolume}% volume')
 
 
 @checkForPlayingMedia
@@ -195,14 +199,18 @@ def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the sum of the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
-	newVolume = min(currentVolume + percentage, 100)
+	if APP_STATE.get('preMuteVolume'):
+		muteOrUnmute()
 
-	# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
-	newVolume = round(newVolume / percentage) * percentage
+	else:
+		# Either 0, or the sum of the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
+		newVolume = min(currentVolume + percentage, 100)
 
-	spotifyHandler.volume(newVolume)
-	speech.say(f'{newVolume}% volume')
+		# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
+		newVolume = round(newVolume / percentage) * percentage
+
+		spotifyHandler.volume(newVolume)
+		speech.say(f'{newVolume}% volume')
 
 
 @checkForPlayingMedia
@@ -225,6 +233,7 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 		speech.say('Muted')
 	else:
 		spotifyHandler.volume(APP_STATE['preMuteVolume'])
+		del APP_STATE['preMuteVolume']
 		speech.say('Unmuted')
 
 
