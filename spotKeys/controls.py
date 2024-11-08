@@ -139,6 +139,32 @@ def fastForward(currentPlaybackContext, milliseconds=3000) -> None:
 	spotifyHandler.seek_track(newPosition)
 
 
+# Spotify API Volume Control Issues
+#
+# Fetching and setting the volume through Spotify's Web API can be unreliable and inconsistent.
+# This module encapsulates functions that handle the volume management via Spotify's API, addressing known issues.
+#
+# Known Issues:
+# 1. The `GET /v1/me/player` endpoint might not always return accurate volume levels
+# after using the `PUT /v1/me/player/volume` to set the volume.
+# Users have reported that the volume level returned does not always match the volume level set,
+# especially when changing volume through different devices or interfaces (GitHub Issue #1317).
+# 2. Desynchronisation issues occur when adjusting the volume via the Spotify Connect Web Playback SDK.
+# Adjustments made from one device (like the native Spotify app) might not be reflected or cause the player to
+# report incorrect playback states (GitHub Issue #788).
+# 3. No direct method to retrieve the current volume percentage from the API,
+# as developers have noted the absence of a straightforward `GET` method
+# to fetch the current volume (GitHub Issue #252).
+#
+# Potential Workarounds:
+# - Continuously monitor the device's playback state to verify volume changes.
+# - Use device-specific commands to manage volume when possible to ensure consistency across different interfaces.
+# - Implement additional checks and balances within the app to handle discrepancies in volume data reported by the API.
+#
+# Implemented Solution:
+#
+
+
 @checkForPlayingMedia
 def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
