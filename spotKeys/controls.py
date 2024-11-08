@@ -5,6 +5,9 @@ from functools import wraps
 from spotKeys import speech
 from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 
+# Store default values
+VOLUME_PERCENTAGE_INTERVAL = 10
+
 # Store any app-level state
 APP_STATE = {}
 
@@ -136,8 +139,34 @@ def fastForward(currentPlaybackContext, milliseconds=3000) -> None:
 	spotifyHandler.seek_track(newPosition)
 
 
+# Spotify API Volume Control Issues
+#
+# Fetching and setting the volume through Spotify's Web API can be unreliable and inconsistent.
+# This module encapsulates functions that handle the volume management via Spotify's API, addressing known issues.
+#
+# Known Issues:
+# 1. The `GET /v1/me/player` endpoint might not always return accurate volume levels
+# after using the `PUT /v1/me/player/volume` to set the volume.
+# Users have reported that the volume level returned does not always match the volume level set,
+# especially when changing volume through different devices or interfaces (GitHub Issue #1317).
+# 2. Desynchronisation issues occur when adjusting the volume via the Spotify Connect Web Playback SDK.
+# Adjustments made from one device (like the native Spotify app) might not be reflected or cause the player to
+# report incorrect playback states (GitHub Issue #788).
+# 3. No direct method to retrieve the current volume percentage from the API,
+# as developers have noted the absence of a straightforward `GET` method
+# to fetch the current volume (GitHub Issue #252).
+#
+# Potential Workarounds:
+# - Continuously monitor the device's playback state to verify volume changes.
+# - Use device-specific commands to manage volume when possible to ensure consistency across different interfaces.
+# - Implement additional checks and balances within the app to handle discrepancies in volume data reported by the API.
+#
+# Implemented Solution:
+#
+
+
 @checkForPlayingMedia
-def decreaseVolume(currentPlaybackContext, percentage=10) -> None:
+def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Decreases the volume of the current track by the given percentage.
 
@@ -146,18 +175,22 @@ def decreaseVolume(currentPlaybackContext, percentage=10) -> None:
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the difference between the current volume and the percentage specified
-	newVolume = max(0, currentVolume - percentage)
+	if APP_STATE.get('preMuteVolume'):
+		muteOrUnmute()
 
-	# Ensure it's always rounded to the closest percentage
-	newVolume = round(newVolume / percentage) * percentage
+	else:
+		# Either 0, or the difference between the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
+		newVolume = max(0, currentVolume - percentage)
 
-	spotifyHandler.volume(newVolume)
-	speech.say(f'{newVolume}% volume')
+		# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
+		newVolume = round(newVolume / percentage) * percentage
+
+		spotifyHandler.volume(newVolume)
+		speech.say(f'{newVolume}% volume')
 
 
 @checkForPlayingMedia
-def increaseVolume(currentPlaybackContext, percentage=10) -> None:
+def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Increases the volume of the current track by the given percentage.
 
@@ -166,14 +199,18 @@ def increaseVolume(currentPlaybackContext, percentage=10) -> None:
 
 	currentVolume = currentPlaybackContext['device']['volume_percent']
 
-	# Either 0, or the sum of the current volume and the percentage specified
-	newVolume = min(currentVolume + percentage, 100)
+	if APP_STATE.get('preMuteVolume'):
+		muteOrUnmute()
 
-	# Ensure it's always rounded to the closest percentage
-	newVolume = round(newVolume / percentage) * percentage
+	else:
+		# Either 0, or the sum of the current volume and the VOLUME_PERCENTAGE_INTERVAL specified
+		newVolume = min(currentVolume + percentage, 100)
 
-	spotifyHandler.volume(newVolume)
-	speech.say(f'{newVolume}% volume')
+		# Ensure it's always rounded to the closest VOLUME_PERCENTAGE_INTERVAL
+		newVolume = round(newVolume / percentage) * percentage
+
+		spotifyHandler.volume(newVolume)
+		speech.say(f'{newVolume}% volume')
 
 
 @checkForPlayingMedia
@@ -196,6 +233,7 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 		speech.say('Muted')
 	else:
 		spotifyHandler.volume(APP_STATE['preMuteVolume'])
+		del APP_STATE['preMuteVolume']
 		speech.say('Unmuted')
 
 
