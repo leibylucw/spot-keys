@@ -14,6 +14,7 @@
 			"a": "getCurrentTrackAlbumName",
 			"i": "getCurrentTrackDetails",
 			"l": "likeCurrentTrack",
-			"d": "dislikeCurrentTrack"
+			"d": "dislikeCurrentTrack",
+			"u": "copyCurrentTrackURL"
 		}
 	}

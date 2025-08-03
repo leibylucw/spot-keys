@@ -2,8 +2,14 @@
 
 from functools import wraps
 
+import pyperclip
+
 from spotKeys import speech
 from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
+
+# Spotify URL partitions
+SPOTIFY_URL = 'https://open.spotify.com'
+TRACK_URL = f'{SPOTIFY_URL}/track'
 
 # Store default values
 VOLUME_PERCENTAGE_INTERVAL = 10
@@ -68,6 +74,12 @@ def getTrackAlbumName(currentPlaybackContext) -> str:
 	"""Gets the album name of the track from the given playback context."""
 
 	return currentPlaybackContext['item']['album']['name']
+
+
+def getTrackID(currentPlaybackContext) -> str:
+	"""Gets the ID of the track from the given playback context."""
+
+	return currentPlaybackContext['item']['id']
 
 
 @checkForPlayingMedia
@@ -300,3 +312,17 @@ def getCurrentTrackDetails(currentPlaybackContext) -> None:
 	albumName = getTrackAlbumName(currentPlaybackContext)
 
 	speech.say(f'{trackName} by {artistNames} from {albumName}')
+
+
+@checkForPlayingMedia
+def copyCurrentTrackURL(currentPlaybackContext) -> None:
+	"""
+	Copies the Spotify URL of the currently-playing track to the clipboard.
+	"""
+
+	trackName = getTrackName(currentPlaybackContext)
+	trackID = getTrackID(currentPlaybackContext)
+
+	speech.say(f'URL copied to clipboard: {trackName}')
+
+	pyperclip.copy(f'{TRACK_URL}/{trackID}')
