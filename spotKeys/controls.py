@@ -214,6 +214,34 @@ def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 
 
 @checkForPlayingMedia
+def likeCurrentTrack(currentPlaybackContext) -> None:
+	"""Adds the currently-playing track to the user's Liked Songs."""
+	track = currentPlaybackContext['item']
+	trackID = track['id']
+	trackName = track['name']
+
+	if spotifyHandler.current_user_saved_tracks_contains([trackID])[0]:
+		speech.say(f'{trackName} is already in your Liked Songs')
+	else:
+		spotifyHandler.current_user_saved_tracks_add([trackID])
+		speech.say(f'Added {trackName} to Liked Songs')
+
+
+@checkForPlayingMedia
+def dislikeCurrentTrack(currentPlaybackContext) -> None:
+	"""Removes the currently-playing track from the user's Liked Songs."""
+	track = currentPlaybackContext['item']
+	trackID = track['id']
+	trackName = track['name']
+
+	if not spotifyHandler.current_user_saved_tracks_contains([trackID])[0]:
+		speech.say(f'{trackName} is not in your Liked Songs')
+	else:
+		spotifyHandler.current_user_saved_tracks_delete([trackID])
+		speech.say(f'Removed {trackName} from Liked Songs')
+
+
+@checkForPlayingMedia
 def muteOrUnmute(currentPlaybackContext) -> None:
 	"""
 	Mutes or unmutes the current track dynamically.
