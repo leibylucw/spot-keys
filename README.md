@@ -39,9 +39,6 @@ pre-commit install
 ```
 
 ## Development
-### Fill out `.env`
-All secrets and other config are expected to be stored in `.env`. First, copy the `.env-sample` to a `.env`. For any secrets, email me to supply app secrets.
-
 ### Install uv
 The project uses [uv](https://github.com/astral-sh/uv). It manages project dependencies and its own virtual environment. To install, use pipx:
 
