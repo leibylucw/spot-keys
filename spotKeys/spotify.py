@@ -3,25 +3,30 @@
 import os
 from pathlib import Path
 
-import environs
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyPKCE
 
-# Default values
-USER_HOME_DIRECTORY = Path.home()
-SPOTIPY_CACHE_PATH = USER_HOME_DIRECTORY / '.spot_keys_cache'
+clientID = 'b2064896aaa54957abee65a77f706933'
+redirectURI = 'http://localhost:1234'
+scopes = 'user-read-playback-state user-modify-playback-state user-library-read user-library-modify'
+cachePath = str(Path(Path.home() / '.spot_keys_cache'))
 
-# Read environment variables from `.env`
-environs.Env().read_env()
-
-
-# Initialize spotipy
-SPOTIFY_HANDLER = spotipy.Spotify(
-	auth_manager=SpotifyOAuth(
-		client_id=os.getenv('CLIENT_ID'),
-		client_secret=os.getenv('CLIENT_SECRET'),
-		redirect_uri=os.getenv('REDIRECT_URI'),
-		scope=os.getenv('SCOPES'),
-		cache_path=SPOTIPY_CACHE_PATH,
-	)
+authManager = SpotifyPKCE(
+	client_id=clientID, redirect_uri=redirectURI, scope=scopes, cache_path=cachePath, open_browser=True
 )
+
+
+def isLoggedIn() -> bool:
+	return bool(authManager.get_cached_token())
+
+
+def ensureLogin():
+	if not isLoggedIn():
+		# Trigger browser login and cache tokens immediately on startup
+		spotipy.Spotify(auth_manager=authManager).me()
+
+
+# Auto-login on import if no cached token exists
+ensureLogin()
+
+SPOTIFY_HANDLER = spotipy.Spotify(auth_manager=authManager)
