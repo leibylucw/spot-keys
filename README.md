@@ -59,3 +59,12 @@ Finally, to run the main script:
 ```shell
 uv run main
 ```
+
+## Building
+To build the app, use Pyinstaller:
+
+```shell
+uv run pyinstaller --noconfirm build.spec
+```
+
+Add the `--clean` flag to clear build caches.
