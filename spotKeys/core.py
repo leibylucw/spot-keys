@@ -8,7 +8,8 @@ def initialize() -> None:
 
 	keyboardHandler.registerKeyboardShortcuts()
 	speech.initialize()
-	speech.say('Spot Keys is ready')
+	speech.say('SpotKeys is ready.')
+	speech.say('Press alt+shift+f1 to open the help page.')
 
 
 def run() -> None:
