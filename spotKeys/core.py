@@ -6,9 +6,10 @@ from spotKeys import controls, keyboardHandler, speech
 def initialize() -> None:
 	"""Initializes the core logic by initializing speech and registering keyboard shortcuts."""
 
-	speech.initialize()
-	speech.say('Spot Keys is ready')
 	keyboardHandler.registerKeyboardShortcuts()
+	speech.initialize()
+	speech.say('SpotKeys is ready.')
+	speech.say('Press alt+shift+f1 to open the help page.')
 
 
 def run() -> None:

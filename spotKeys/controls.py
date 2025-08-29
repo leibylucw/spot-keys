@@ -47,7 +47,7 @@ def checkForPlayingMedia(function):
 			currentPlaybackContext = getCurrentPlaybackContext()
 			return function(currentPlaybackContext, *args, **kwargs)
 		except NoMediaPlayingError:
-			speech.say('No media playing')
+			speech.say('No media playing', interrupt=True)
 			return
 
 	return wrapper
@@ -96,10 +96,10 @@ def playOrPause(currentPlaybackContext) -> None:
 
 	if isPlaying:
 		spotifyHandler.pause_playback()
-		speech.say('Paused')
+		speech.say('Paused', interrupt=True)
 	else:
 		spotifyHandler.start_playback()
-		speech.say('Playing')
+		speech.say('Playing', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -107,7 +107,7 @@ def previousTrack(currentPlaybackContext) -> None:
 	"""Moves to the previous track."""
 
 	spotifyHandler.previous_track()
-	speech.say('Previous track')
+	speech.say('Previous track', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -115,7 +115,7 @@ def nextTrack(currentPlaybackContext) -> None:
 	"""Moves to the next track."""
 
 	spotifyHandler.next_track()
-	speech.say('Next track')
+	speech.say('Next track', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -198,7 +198,7 @@ def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 		newVolume = round(newVolume / percentage) * percentage
 
 		spotifyHandler.volume(newVolume)
-		speech.say(f'{newVolume}% volume')
+		speech.say(f'{newVolume}% volume', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -222,7 +222,7 @@ def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 		newVolume = round(newVolume / percentage) * percentage
 
 		spotifyHandler.volume(newVolume)
-		speech.say(f'{newVolume}% volume')
+		speech.say(f'{newVolume}% volume', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -233,10 +233,10 @@ def likeCurrentTrack(currentPlaybackContext) -> None:
 	trackName = track['name']
 
 	if spotifyHandler.current_user_saved_tracks_contains([trackID])[0]:
-		speech.say(f'{trackName} is already in your Liked Songs')
+		speech.say(f'{trackName} is already in your Liked Songs', interrupt=True)
 	else:
 		spotifyHandler.current_user_saved_tracks_add([trackID])
-		speech.say(f'Added {trackName} to Liked Songs')
+		speech.say(f'Added {trackName} to Liked Songs', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -247,10 +247,10 @@ def dislikeCurrentTrack(currentPlaybackContext) -> None:
 	trackName = track['name']
 
 	if not spotifyHandler.current_user_saved_tracks_contains([trackID])[0]:
-		speech.say(f'{trackName} is not in your Liked Songs')
+		speech.say(f'{trackName} is not in your Liked Songs', interrupt=True)
 	else:
 		spotifyHandler.current_user_saved_tracks_delete([trackID])
-		speech.say(f'Removed {trackName} from Liked Songs')
+		speech.say(f'Removed {trackName} from Liked Songs', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -270,32 +270,32 @@ def muteOrUnmute(currentPlaybackContext) -> None:
 	if currentVolume > 0:
 		APP_STATE['preMuteVolume'] = currentVolume
 		spotifyHandler.volume(0)
-		speech.say('Muted')
+		speech.say('Muted', interrupt=True)
 	else:
 		spotifyHandler.volume(APP_STATE['preMuteVolume'])
 		del APP_STATE['preMuteVolume']
-		speech.say('Unmuted')
+		speech.say('Unmuted', interrupt=True)
 
 
 @checkForPlayingMedia
 def getCurrentTrackName(currentPlaybackContext) -> None:
 	"""Gets the name of the currently-playing track."""
 
-	speech.say(getTrackName(currentPlaybackContext))
+	speech.say(getTrackName(currentPlaybackContext), interrupt=True)
 
 
 @checkForPlayingMedia
 def getCurrentTrackArtistNames(currentPlaybackContext) -> None:
 	"""Get the list of artist name(s) of the currently-playing track."""
 
-	speech.say(', '.join(getTrackArtistNames(currentPlaybackContext)))
+	speech.say(', '.join(getTrackArtistNames(currentPlaybackContext)), interrupt=True)
 
 
 @checkForPlayingMedia
 def getCurrentTrackAlbumName(currentPlaybackContext) -> None:
 	"""Gets the album name of the currently-playing track."""
 
-	speech.say(getTrackAlbumName(currentPlaybackContext))
+	speech.say(getTrackAlbumName(currentPlaybackContext), interrupt=True)
 
 
 @checkForPlayingMedia
@@ -311,7 +311,7 @@ def getCurrentTrackDetails(currentPlaybackContext) -> None:
 	artistNames = ', '.join(getTrackArtistNames(currentPlaybackContext))
 	albumName = getTrackAlbumName(currentPlaybackContext)
 
-	speech.say(f'{trackName} by {artistNames} from {albumName}')
+	speech.say(f'{trackName} by {artistNames} from {albumName}', interrupt=True)
 
 
 @checkForPlayingMedia
@@ -323,6 +323,6 @@ def copyCurrentTrackURL(currentPlaybackContext) -> None:
 	trackName = getTrackName(currentPlaybackContext)
 	trackID = getTrackID(currentPlaybackContext)
 
-	speech.say(f'URL copied to clipboard: {trackName}')
+	speech.say(f'URL copied to clipboard: {trackName}', interrupt=True)
 
 	pyperclip.copy(f'{TRACK_URL}/{trackID}')
