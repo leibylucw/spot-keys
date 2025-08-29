@@ -9,10 +9,10 @@ def initialize() -> None:
 	tolk.load()
 
 
-def say(text: str) -> None:
+def say(text: str, interrupt: bool = False) -> None:
 	"""Speaks the given text with Tolk."""
 
-	tolk.speak(text)
+	tolk.speak(text, interrupt=interrupt)
 
 
 def isSpeaking() -> bool:
