@@ -34,7 +34,7 @@ def registerKeyboardShortcuts() -> None:
 	"""Register built-in keyboard shortcuts with the keyboard library."""
 
 	for key, control in DEFAULT_KEYBOARD_SHORTCUTS.items():
-		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_MODIFIERS}+{key}', control)
+		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_MODIFIERS}+{key}', control, suppress=True)
 
 
 def waitForInput() -> None:
