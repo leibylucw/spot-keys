@@ -1,14 +1,14 @@
 """Configures keyboard shortcut bindings."""
 
-from typing import Callable, Dict
+from collections.abc import Callable
 
 import keyboard
 
-from spotKeys import controls
+from spotKeys import controls, help
 
 DEFAULT_KEYBOARD_MODIFIERS = 'alt+shift'
-QUIT_SHORTCUT = f'{DEFAULT_KEYBOARD_MODIFIERS}+q'
-DEFAULT_KEYBOARD_SHORTCUTS: Dict[str, Callable[[], None]] = {
+
+DEFAULT_KEYBOARD_SHORTCUTS: dict[str, Callable[[], None]] = {
 	'p': controls.playOrPause,
 	'left': controls.previousTrack,
 	'right': controls.nextTrack,
@@ -24,14 +24,17 @@ DEFAULT_KEYBOARD_SHORTCUTS: Dict[str, Callable[[], None]] = {
 	'l': controls.likeCurrentTrack,
 	'd': controls.dislikeCurrentTrack,
 	'u': controls.copyCurrentTrackURL,
+	'f1': help.openHelpPage,
 }
+
+QUIT_SHORTCUT = f'{DEFAULT_KEYBOARD_MODIFIERS}+q'
 
 
 def registerKeyboardShortcuts() -> None:
 	"""Register built-in keyboard shortcuts with the keyboard library."""
 
-	for key, function in DEFAULT_KEYBOARD_SHORTCUTS.items():
-		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_MODIFIERS}+{key}', function)
+	for key, control in DEFAULT_KEYBOARD_SHORTCUTS.items():
+		keyboard.add_hotkey(f'{DEFAULT_KEYBOARD_MODIFIERS}+{key}', control)
 
 
 def waitForInput() -> None:
