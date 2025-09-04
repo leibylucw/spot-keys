@@ -1,12 +1,12 @@
 """Facilitates app logic."""
 
-from spotKeys import controls, keyboardHandler, speech
+from spotKeys import controls, keyboard, speech
 
 
 def initialize() -> None:
 	"""Initializes the core logic by initializing speech and registering keyboard shortcuts."""
 
-	keyboardHandler.registerKeyboardShortcuts()
+	keyboard.registerKeyboardShortcuts()
 	speech.initialize()
 	speech.say('SpotKeys is ready.')
 	speech.say('Press alt+shift+f1 to open the help page.')
@@ -15,7 +15,7 @@ def initialize() -> None:
 def run() -> None:
 	"""Awaits user input."""
 
-	keyboardHandler.waitForInput()
+	keyboard.waitForInput()
 
 
 def exit() -> None:
@@ -27,3 +27,4 @@ def exit() -> None:
 		pass
 
 	speech.destroy()
+	keyboard.destroy()
