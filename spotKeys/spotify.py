@@ -38,7 +38,7 @@ class KeyringCache(CacheHandler):
 
 
 clientID = 'b2064896aaa54957abee65a77f706933'
-redirectURI = 'http://localhost:1234'
+redirectURI = 'http://127.0.0.1:8341'
 scopes = 'user-read-playback-state user-modify-playback-state user-library-read user-library-modify'
 
 authManager = SpotifyPKCE(
