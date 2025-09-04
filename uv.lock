@@ -2819,6 +2819,7 @@ dependencies = [
     { name = "keyring" },
     { name = "pyinstaller" },
     { name = "pyperclip" },
+    { name = "requests" },
     { name = "spotipy" },
     { name = "tolk" },
 ]
@@ -2830,6 +2831,7 @@ requires-dist = [
     { name = "keyring", specifier = ">=25.6.0" },
     { name = "pyinstaller", specifier = ">=6.15.0" },
     { name = "pyperclip", specifier = ">=1.9.0" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "spotipy", specifier = ">=2.24.0" },
     { name = "tolk", directory = "vendor/tolk-python" },
 ]
