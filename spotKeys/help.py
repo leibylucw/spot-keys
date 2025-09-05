@@ -4,7 +4,7 @@ import webbrowser
 
 from spotKeys import speech
 
-SPOT_KEYS_HELP_PAGE = 'https://lukeleiby.com/spot-keys-v0-1-0-help'
+SPOT_KEYS_HELP_PAGE = 'https://lukeleiby.com/spot-keys-v0-2-0-help'
 
 
 def openHelpPage():
