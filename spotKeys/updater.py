@@ -104,7 +104,9 @@ def checkForUpdate() -> None:
 		return
 
 	if compareVersions(parseVersion(localVersion), parseVersion(liveVersion)):
-		updateLink = f'https://github.com/leibylucw/spot-keys/releases/download/v{liveVersion}/SpotKeys.exe'
+		updateLink = (
+			f'https://github.com/leibylucw/spot-keys/releases/download/v{liveVersion}/SpotKeys_v{liveVersion}.exe'
+		)
 
 		speech.say('An update is available.')
 		speech.say(f'The latest version is {liveVersion}.')
