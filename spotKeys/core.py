@@ -1,6 +1,8 @@
 """Facilitates app logic."""
 
-from spotKeys import controls, keyboard, speech
+import time
+
+from spotKeys import controls, keyboard, speech, updater
 
 
 def initialize() -> None:
@@ -8,6 +10,11 @@ def initialize() -> None:
 
 	keyboard.registerKeyboardShortcuts()
 	speech.initialize()
+	speech.say('SpotKeys is loading, please wait...')
+	time.sleep(2)
+
+	updater.checkForUpdate()
+
 	speech.say('SpotKeys is ready.')
 	speech.say('Press alt+shift+f1 to open the help page.')
 

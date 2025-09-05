@@ -4,7 +4,7 @@ from functools import wraps
 
 import pyperclip
 
-from spotKeys import speech
+from spotKeys import speech, updater
 from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 
 # Spotify URL partitions
@@ -326,3 +326,9 @@ def copyCurrentTrackURL(currentPlaybackContext) -> None:
 	speech.say(f'URL copied to clipboard: {trackName}', interrupt=True)
 
 	pyperclip.copy(f'{TRACK_URL}/{trackID}')
+
+
+def checkForUpdate() -> None:
+	"""Checks if there's an available app update."""
+
+	updater.checkForUpdate()
