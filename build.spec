@@ -7,6 +7,7 @@ a = Analysis(
     binaries=[],
         datas=[
             ('vendor\\tolk-python\\tolk\\*.dll', '.'),
+            ('manifest.json', '.'),
         ],
     hiddenimports=[],
     hookspath=[],
