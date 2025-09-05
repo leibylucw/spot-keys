@@ -8,6 +8,7 @@ from spotKeys import speech
 
 LIVE_MANIFEST_URL = 'https://raw.githubusercontent.com/leibylucw/spot-keys/main/manifest.json'
 LOCAL_MANIFEST_PATH = Path(__file__).resolve().parent.parent / 'manifest.json'
+DOCUMENTS_PATH = Path.home() / 'Documents'
 
 
 def getLiveManifest() -> str | None:
@@ -52,13 +53,33 @@ def parseVersion(version: str) -> tuple[int, int, int, tuple[int, ...]]:
 
 
 def compareVersions(version1: tuple, version2: tuple) -> bool:
-	"""Determine if the current version is less than or equal to the latest version."""
+	"""Determine if the current version is less than the latest version."""
 
 	return version1 < version2
 
 
+def downloadUpdate(updateLink: str, version: str) -> bool:
+	"""Compare local version to live; download update if available."""
+
+	try:
+		DOCUMENTS_PATH.mkdir(parents=True, exist_ok=True)
+		filePath = DOCUMENTS_PATH / f'SpotKeys_v{version}.exe'
+
+		if filePath.exists():
+			return True
+
+		with requests.get(updateLink, stream=True, timeout=30) as r:
+			r.raise_for_status()
+			with open(filePath, 'wb') as f:
+				for chunk in r.iter_content(chunk_size=8192):
+					f.write(chunk)
+		return True
+	except requests.exceptions.RequestException as e:
+		return False
+
+
 def checkForUpdate() -> None:
-	"""Compare local version to live; speak only if an update is available, else confirm up-to-date."""
+	"""Compare local version to live; download update if available."""
 
 	localText = getLocalManifest()
 	if localText is None:
@@ -82,20 +103,21 @@ def checkForUpdate() -> None:
 		speech.say('Latest version is missing or invalid.')
 		return
 
-	if compareVersions(localVersion, liveVersion):
-		updateLink = (
-			f'https://github.com/leibylucw/spot-keys/releases/download/v{liveVersion}/SpotKeys_v{liveVersion}.exe'
-		)
+	if compareVersions(parseVersion(localVersion), parseVersion(liveVersion)):
+		updateLink = f'https://github.com/leibylucw/spot-keys/releases/download/v{liveVersion}/SpotKeys.exe'
 
 		speech.say('An update is available.')
 		speech.say(f'The latest version is {liveVersion}.')
 		speech.say(f'You have version {localVersion}.')
 
-		pyperclip.copy(updateLink)
-
-		speech.say('The link to download the latest version has been copied to your clipboard.')
-		speech.say('Remember to unload this version of SpotKeys before updating.')
-		speech.say('To do so, press alt+shift+q.')
+		if downloadUpdate(updateLink, liveVersion):
+			speech.say(f'The update has been downloaded to your Documents folder as SpotKeys_v{liveVersion}.exe.')
+			speech.say('Remember to unload this version of SpotKeys before updating.')
+			speech.say('To do so, press alt+shift+q.')
+		else:
+			pyperclip.copy(updateLink)
+			speech.say('The update could not be downloaded automatically.')
+			speech.say('The link has been copied to your clipboard so you can download it manually.')
 		return
 
 	speech.say('SpotKeys is up to date.')
