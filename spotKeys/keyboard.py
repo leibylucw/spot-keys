@@ -20,6 +20,7 @@ DEFAULT_KEYBOARD_SHORTCUTS: dict[str, Callable[[], None]] = {
 	']': controls.fastForward,
 	'm': controls.muteOrUnmute,
 	'e': controls.cycleRepeat,
+	's': controls.toggleShuffle,
 	'n': controls.getCurrentTrackName,
 	'r': controls.getCurrentTrackArtistNames,
 	'a': controls.getCurrentTrackAlbumName,
