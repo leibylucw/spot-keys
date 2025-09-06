@@ -1,8 +1,10 @@
 """Defines user-facing controls to use Spotify."""
 
+import logging
 from functools import wraps
 
 import pyperclip
+from spotipy.exceptions import SpotifyException
 
 from spotKeys import speech, updater
 from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
@@ -17,6 +19,19 @@ VOLUME_PERCENTAGE_INTERVAL = 10
 # Store any app-level state
 APP_STATE = {}
 
+# Repeat cycle mapping (off -> track -> context -> off)
+REPEAT_STATES = {
+	'off': 'track',
+	'track': 'context',
+	'context': 'off',
+}
+
+# silence Spotipy + urllib3 loggers
+logging.getLogger('spotipy').setLevel(logging.CRITICAL)
+logging.getLogger('spotipy').propagate = False
+logging.getLogger('urllib3').setLevel(logging.CRITICAL)
+logging.getLogger('urllib3').propagate = False
+
 
 class NoMediaPlayingError(Exception):
 	"""Exception raised when there is no media currently playing."""
@@ -28,7 +43,6 @@ class NoMediaPlayingError(Exception):
 def getCurrentPlaybackContext() -> dict:
 	"""
 	Gets the context payload for the currently-playing media.
-
 	If media is playing, the payload is returned.
 	Otherwise, a NoMediaPlaying error is raised.
 	"""
@@ -86,7 +100,6 @@ def getTrackID(currentPlaybackContext) -> str:
 def playOrPause(currentPlaybackContext) -> None:
 	"""
 	Plays or pauses the current track dynamically.
-
 	If media is playing, it will be paused.
 	Conversely, if it is paused, it will be resumed.
 	"""
@@ -122,7 +135,6 @@ def nextTrack(currentPlaybackContext) -> None:
 def rewind(currentPlaybackContext, milliseconds=3000) -> None:
 	"""
 	Rewinds the current track by the given interval in milliseconds.
-
 	If the new position is negative, it seeks to the beginning of the track.
 	"""
 
@@ -138,7 +150,6 @@ def rewind(currentPlaybackContext, milliseconds=3000) -> None:
 def fastForward(currentPlaybackContext, milliseconds=3000) -> None:
 	"""
 	Fast-forwards the current track by the given interval in milliseconds.
-
 	If the new position exceeds the track duration, it seeks to the end of the track.
 	"""
 
@@ -181,7 +192,6 @@ def fastForward(currentPlaybackContext, milliseconds=3000) -> None:
 def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Decreases the volume of the current track by the given percentage.
-
 	If the new volume is negative, it sets the volume to 0.
 	"""
 
@@ -205,7 +215,6 @@ def decreaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL
 def increaseVolume(currentPlaybackContext, percentage=VOLUME_PERCENTAGE_INTERVAL) -> None:
 	"""
 	Increases the volume of the current track by the given percentage.
-
 	If the new volume exceeds 100, it sets the volume to 100.
 	"""
 
@@ -257,11 +266,9 @@ def dislikeCurrentTrack(currentPlaybackContext) -> None:
 def muteOrUnmute(currentPlaybackContext) -> None:
 	"""
 	Mutes or unmutes the current track dynamically.
-
 	If the current volume is greater than 0,
 	it stores the current volume in the app's state dictionary,
 	'then sets the new volume to 0.
-
 	Otherwise, it sets the new volume to the volume before it was muted.
 	"""
 
@@ -326,6 +333,24 @@ def copyCurrentTrackURL(currentPlaybackContext) -> None:
 	speech.say(f'URL copied to clipboard: {trackName}', interrupt=True)
 
 	pyperclip.copy(f'{TRACK_URL}/{trackID}')
+
+
+@checkForPlayingMedia
+def cycleRepeat(currentPlaybackContext) -> None:
+	"""
+	Cycles repeat with fallbacks when a mode is disallowed by the current context.
+	Order preference: off -> track -> context -> off
+	"""
+
+	state = currentPlaybackContext.get('repeat_state')
+	nextState = REPEAT_STATES.get(state)
+
+	try:
+		spotifyHandler.repeat(nextState)
+		speech.say(f'Repeat {nextState}')
+	except Exception:
+		speech.say('Repeat is not available in this context.')
+		speech.say('You must be listening to a collection like an album, a playlist, etc.')
 
 
 def checkForUpdate() -> None:

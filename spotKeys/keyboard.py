@@ -19,6 +19,7 @@ DEFAULT_KEYBOARD_SHORTCUTS: dict[str, Callable[[], None]] = {
 	'[': controls.rewind,
 	']': controls.fastForward,
 	'm': controls.muteOrUnmute,
+	'e': controls.cycleRepeat,
 	'n': controls.getCurrentTrackName,
 	'r': controls.getCurrentTrackArtistNames,
 	'a': controls.getCurrentTrackAlbumName,
