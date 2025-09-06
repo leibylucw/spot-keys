@@ -347,6 +347,10 @@ def cycleRepeat(currentPlaybackContext) -> None:
 
 	try:
 		spotifyHandler.repeat(nextState)
+
+		if 'context' in nextState:
+			nextState = 'all'
+
 		speech.say(f'Repeat {nextState}')
 	except Exception:
 		speech.say('Repeat is not available in this context.')
