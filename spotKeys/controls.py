@@ -357,6 +357,25 @@ def cycleRepeat(currentPlaybackContext) -> None:
 		speech.say('You must be listening to a collection like an album, a playlist, etc.')
 
 
+@checkForPlayingMedia
+def toggleShuffle(currentPlaybackContext) -> None:
+	"""Toggles shuffle between on and off."""
+
+	shuffleState = currentPlaybackContext.get('shuffle_state')
+	newShuffleState = not shuffleState
+
+	try:
+		spotifyHandler.shuffle(newShuffleState)
+	except Exception:
+		speech.say('Shuffle is unavailable.')
+		return
+
+	if newShuffleState:
+		speech.say('Shuffle on')
+	else:
+		speech.say('Shuffle off')
+
+
 def checkForUpdate() -> None:
 	"""Checks if there's an available app update."""
 
