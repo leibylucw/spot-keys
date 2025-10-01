@@ -376,6 +376,48 @@ def toggleShuffle(currentPlaybackContext) -> None:
 		speech.say('Shuffle off')
 
 
+def playTrackFromClipboard() -> None:
+	"""
+	Parses a valid Spotify track URL from the clipboard,
+	enqueues it, then plays the next track to immediately jump to it.
+	Announces track details on success, or an error message on failure.
+	"""
+
+	try:
+		clipboardText = pyperclip.paste()
+
+		if not clipboardText:
+			speech.say('Unable to play track from clipboard text.', interrupt=True)
+			return
+
+		# Parse the track ID from the URL
+		# Expected format: https://open.spotify.com/track/{track_id}
+		if not clipboardText.startswith(TRACK_URL):
+			speech.say('Unable to play track from clipboard text.', interrupt=True)
+			return
+
+		# Extract the track ID (everything after the last '/')
+		trackID = clipboardText.replace(TRACK_URL + '/', '').split('?')[0]
+
+		if not trackID:
+			speech.say('Unable to play track from clipboard text.', interrupt=True)
+			return
+
+		# Add track to queue and skip to it
+		spotifyHandler.add_to_queue(f'spotify:track:{trackID}')
+		spotifyHandler.next_track()
+
+		# Get track details for announcement
+		trackInfo = spotifyHandler.track(trackID)
+		trackName = trackInfo['name']
+		artistNames = ', '.join([artist['name'] for artist in trackInfo['artists']])
+
+		speech.say(f'Now playing: {trackName} by {artistNames}', interrupt=True)
+
+	except (SpotifyException, KeyError, IndexError):
+		speech.say('Unable to play track from clipboard text.', interrupt=True)
+
+
 def checkForUpdate() -> None:
 	"""Checks if there's an available app update."""
 
