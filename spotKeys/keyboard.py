@@ -30,6 +30,7 @@ DEFAULT_KEYBOARD_SHORTCUTS: dict[str, Callable[[], None]] = {
 	'u': controls.copyCurrentTrackURL,
 	'c': controls.checkForUpdate,
 	'v': controls.playTrackFromClipboard,
+	'o': controls.openDonationPage,
 	'f1': help.openHelpPage,
 	'q': lambda: ctypes.windll.user32.PostQuitMessage(0),  # quit as a normal control
 }

@@ -1,6 +1,7 @@
 """Defines user-facing controls to use Spotify."""
 
 import logging
+import webbrowser
 from functools import wraps
 
 import pyperclip
@@ -12,6 +13,7 @@ from spotKeys.spotify import SPOTIFY_HANDLER as spotifyHandler
 # Spotify URL partitions
 SPOTIFY_URL = 'https://open.spotify.com'
 TRACK_URL = f'{SPOTIFY_URL}/track'
+DONATION_URL = 'https://www.paypal.com/donate/?business=VPHFWAPEPS6D4&no_recurring=0&item_name=Donations+help+keep+the+lights+on+while+I+explore+new+opportunities.+My+software+is+free+to+use%2C+but+I+appreciate+any+help.&currency_code=USD'
 
 # Store default values
 VOLUME_PERCENTAGE_INTERVAL = 10
@@ -422,3 +424,9 @@ def checkForUpdate() -> None:
 	"""Checks if there's an available app update."""
 
 	updater.checkForUpdate()
+
+
+def openDonationPage() -> None:
+	"""Opens the donation page in the user's default browser."""
+
+	webbrowser.open(DONATION_URL)
